@@ -1,8 +1,8 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useState, useEffect } from "react"
 import cssText from "data-text:~/style.css"
-import { OverlayTemplate } from "./components/templates/OverlayTemplate"
-import { MemeGrid } from "./components/organisms/MemeGrid"
+import { OverlayLayout } from "./components/layout/overlay-layout"
+import { MemeGrid } from "./features/meme-picker/components/meme-grid"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"]
@@ -45,14 +45,14 @@ const MemeOverlay = () => {
   }, [])
 
   return (
-    <OverlayTemplate
+    <OverlayLayout
       isOpen={isOpen}
       onClose={() => setIsOpen((prev) => !prev)}
       title={chrome.i18n.getMessage("headerTitle")}
       footerHint={chrome.i18n.getMessage("toggleHint")}
     >
       <MemeGrid memes={MEMES} />
-    </OverlayTemplate>
+    </OverlayLayout>
   )
 }
 

@@ -1,5 +1,6 @@
 import React from "react"
-import { MemeCard } from "../molecules/MemeCard"
+import { MemeCard } from "./meme-card"
+import { EmptyState } from "../../../components/feedback/empty-state"
 
 interface Meme {
   id: number
@@ -13,11 +14,7 @@ interface MemeGridProps {
 
 export const MemeGrid: React.FC<MemeGridProps> = ({ memes }) => {
   if (memes.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-10 text-slate-500">
-        <span className="text-lg">{chrome.i18n.getMessage("noMemes")}</span>
-      </div>
-    )
+    return <EmptyState message={chrome.i18n.getMessage("noMemes")} />
   }
 
   return (

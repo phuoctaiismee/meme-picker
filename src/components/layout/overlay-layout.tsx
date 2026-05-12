@@ -1,7 +1,7 @@
 import React from "react"
-import { Button } from "../atoms/Button"
+import { Button } from "../ui/button"
 
-interface OverlayTemplateProps {
+interface OverlayLayoutProps {
   isOpen: boolean
   onClose: () => void
   title: string
@@ -9,14 +9,13 @@ interface OverlayTemplateProps {
   footerHint?: string
 }
 
-export const OverlayTemplate: React.FC<OverlayTemplateProps> = ({
+export const OverlayLayout: React.FC<OverlayLayoutProps> = ({
   isOpen,
   onClose,
   title,
   children,
   footerHint
 }) => {
-
   if (!isOpen) {
     return (
       <Button 
