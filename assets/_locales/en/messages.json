@@ -1,0 +1,14 @@
+{
+  "headerTitle": {
+    "message": "Meme Picker"
+  },
+  "searchPlaceholder": {
+    "message": "Search memes..."
+  },
+  "noMemes": {
+    "message": "No memes found"
+  },
+  "toggleHint": {
+    "message": "Press Ctrl + M to toggle"
+  }
+}
