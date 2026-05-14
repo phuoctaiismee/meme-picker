@@ -1,6 +1,13 @@
-import type { PlasmoCSConfig } from "plasmo"
-import { useState, useEffect } from "react"
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery
+} from "@tanstack/react-query"
 import cssText from "data-text:~/style.css"
+import type { PlasmoCSConfig } from "plasmo"
+import { useEffect, useState } from "react"
+
+import { appClient } from "./apis/client"
 import { OverlayLayout } from "./components/layout/overlay-layout"
 import { MemeGrid } from "./features/meme-picker/components/meme-grid"
 
@@ -14,18 +21,35 @@ export const getStyle = () => {
   return style
 }
 
-const MEMES = [
-  { id: 1, url: "https://images.unsplash.com/photo-1531928351158-2f7360b94b51?w=400&h=400&fit=crop", title: "Funny Cat" },
-  { id: 2, url: "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400&h=400&fit=crop", title: "Surprised Dog" },
-  { id: 3, url: "https://images.unsplash.com/photo-1494253109108-2e30c049369b?w=400&h=400&fit=crop", title: "Cool Panda" },
-  { id: 4, url: "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=400&h=400&fit=crop", title: "Happy Pug" },
-]
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 30 * 60 * 1000,
+      retry: 1,
+      staleTime: 5 * 60 * 1000
+    }
+  }
+})
 
 const MemeOverlay = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const {
+    data: memes = [],
+    error,
+    isFetching,
+    isPending
+  } = useQuery({
+    enabled: isOpen,
+    queryFn: () => appClient.meme.getAll(),
+    queryKey: ["memes", "all"]
+  })
 
   useEffect(() => {
-    const handleMessage = (request) => {
+    const handleMessage = (
+      request: { name?: string },
+      _sender: chrome.runtime.MessageSender,
+      _sendResponse: (response?: unknown) => void
+    ) => {
       if (request.name === "TOGGLE_OVERLAY") {
         setIsOpen((prev) => !prev)
       }
@@ -44,16 +68,31 @@ const MemeOverlay = () => {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [])
 
+  useEffect(() => {
+    if (error) {
+      console.error("Failed to load memes:", error)
+    }
+  }, [error])
+
   return (
     <OverlayLayout
       isOpen={isOpen}
       onClose={() => setIsOpen((prev) => !prev)}
       title={chrome.i18n.getMessage("headerTitle")}
-      footerHint={chrome.i18n.getMessage("toggleHint")}
-    >
-      <MemeGrid memes={MEMES} />
+      footerHint={chrome.i18n.getMessage("toggleHint")}>
+      <MemeGrid
+        memes={memes}
+        error={error ? chrome.i18n.getMessage("memeLoadError") : null}
+        isLoading={isOpen && isPending && isFetching}
+      />
     </OverlayLayout>
   )
 }
 
-export default MemeOverlay
+const MemeOverlayWithQuery = () => (
+  <QueryClientProvider client={queryClient}>
+    <MemeOverlay />
+  </QueryClientProvider>
+)
+
+export default MemeOverlayWithQuery

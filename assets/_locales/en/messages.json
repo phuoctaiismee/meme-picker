@@ -8,6 +8,12 @@
   "noMemes": {
     "message": "No memes found"
   },
+  "loadingMemes": {
+    "message": "Loading memes..."
+  },
+  "memeLoadError": {
+    "message": "Could not load memes"
+  },
   "toggleHint": {
     "message": "Press Ctrl + M to toggle"
   }
