@@ -11,6 +11,14 @@ interface ApiRequestPayload {
   url: string
 }
 
+interface ImageRequestPayload {
+  url: string
+}
+
+interface ImageResponsePayload {
+  dataUrl: string
+}
+
 const buildApiUrl = (path: string, params?: ApiRequestPayload["params"]) => {
   const url = new URL(path, API_URL)
 
@@ -42,19 +50,42 @@ const requestApi = async (payload: ApiRequestPayload) => {
   return data
 }
 
-chrome.action.onClicked.addListener((tab) => {
-  if (tab.id) {
-    chrome.tabs
-      .sendMessage(tab.id, {
-        name: "TOGGLE_OVERLAY"
-      })
-      .catch((err) => {
-        console.log("Content script not ready yet or restricted page:", err)
-      })
+const blobToDataUrl = (blob: Blob) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.addEventListener("load", () => resolve(String(reader.result)))
+    reader.addEventListener("error", () => reject(reader.error))
+    reader.readAsDataURL(blob)
+  })
+
+const requestImage = async (
+  payload: ImageRequestPayload
+): Promise<ImageResponsePayload> => {
+  const response = await fetch(payload.url)
+
+  if (!response.ok) {
+    throw new Error("Failed to load meme image.")
   }
-})
+
+  return {
+    dataUrl: await blobToDataUrl(await response.blob())
+  }
+}
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  if (request?.name === "IMAGE_REQUEST") {
+    requestImage(request.payload)
+      .then((data) => sendResponse({ data, ok: true }))
+      .catch((error) => {
+        const message =
+          error instanceof Error ? error.message : "Failed to load meme image."
+
+        sendResponse({ error: message, ok: false })
+      })
+
+    return true
+  }
+
   if (request?.name !== "API_REQUEST") {
     return
   }

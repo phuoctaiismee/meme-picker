@@ -1,7 +1,4 @@
 {
-  "headerTitle": {
-    "message": "Meme Picker"
-  },
   "searchPlaceholder": {
     "message": "Search memes..."
   },
@@ -13,8 +10,5 @@
   },
   "memeLoadError": {
     "message": "Could not load memes"
-  },
-  "toggleHint": {
-    "message": "Press Ctrl + M to toggle"
   }
 }

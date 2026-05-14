@@ -2,8 +2,175 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+.mp-inline-button {
+  align-items: center;
+  background: #2563eb;
+  border: 0;
+  border-radius: 9999px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font:
+    600 12px/1 system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  height: 28px;
+  justify-content: center;
+  margin: 4px 6px;
+  padding: 0 12px;
+  position: relative;
+  white-space: nowrap;
+  z-index: 20;
+}
+
+.mp-inline-button:hover {
+  background: #1d4ed8;
+}
+
+.mp-picker {
+  color: #f8fafc;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.mp-backdrop {
+  background: rgb(15 23 42 / 0.48);
+  inset: 0;
+  position: fixed;
+  z-index: 2147483645;
+}
+
+.mp-panel {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.42);
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  height: min(720px, 84vh);
+  max-width: min(560px, calc(100vw - 32px));
+  overflow: hidden;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 560px;
+  z-index: 2147483646;
+}
+
+.mp-header {
+  align-items: center;
+  border-bottom: 1px solid #1e293b;
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+
+.mp-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
   margin: 0;
-  width: 400px;
-  height: 500px;
+}
+
+.mp-header p {
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 2px 0 0;
+}
+
+.mp-context {
+  border-bottom: 1px solid #1e293b;
+  color: #cbd5e1;
+  flex: 0 0 auto;
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: 116px;
+  overflow: auto;
+  padding: 10px 16px;
+}
+
+.mp-context-title {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.mp-context-title span,
+.mp-debug-context span {
+  color: #64748b;
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mp-context-title button {
+  background: transparent;
+  border: 0;
+  color: #60a5fa;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0;
+}
+
+.mp-context p {
+  margin: 0;
+}
+
+.mp-debug-context {
+  border-bottom: 1px solid #1e293b;
+  color: #94a3b8;
+  flex: 0 0 auto;
+  font-size: 11px;
+  line-height: 1.45;
+  max-height: 150px;
+  overflow: auto;
+  padding: 10px 16px;
+}
+
+.mp-debug-context p {
+  border-top: 1px solid #1e293b;
+  margin: 8px 0 0;
+  padding-top: 8px;
+}
+
+.mp-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.mp-toast {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  bottom: 24px;
+  box-shadow: 0 18px 60px rgb(0 0 0 / 0.35);
+  color: #f8fafc;
+  font:
+    600 13px/1.4 system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  left: 50%;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 10px 14px;
+  position: fixed;
+  text-align: center;
+  transform: translateX(-50%);
+  z-index: 2147483647;
 }

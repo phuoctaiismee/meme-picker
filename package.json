@@ -29,6 +29,10 @@
     "typescript": "5.3.3"
   },
   "manifest": {
+    "permissions": [
+      "clipboardRead",
+      "clipboardWrite"
+    ],
     "host_permissions": [
       "https://*/*"
     ]

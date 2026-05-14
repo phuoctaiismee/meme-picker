@@ -13,12 +13,14 @@ interface MemeGridProps {
   memes: Meme[]
   error?: string | null
   isLoading?: boolean
+  onSelect?: (meme: Meme) => void
 }
 
 export const MemeGrid: React.FC<MemeGridProps> = ({
   memes,
   error,
-  isLoading
+  isLoading,
+  onSelect
 }) => {
   if (isLoading) {
     return <EmptyState message={chrome.i18n.getMessage("loadingMemes")} />
@@ -35,7 +37,12 @@ export const MemeGrid: React.FC<MemeGridProps> = ({
   return (
     <div className="grid grid-cols-2 gap-4 p-6">
       {memes.map((meme) => (
-        <MemeCard key={meme.id} url={meme.url} title={meme.title} />
+        <MemeCard
+          key={meme.id}
+          url={meme.url}
+          title={meme.title}
+          onClick={() => onSelect?.(meme)}
+        />
       ))}
     </div>
   )
