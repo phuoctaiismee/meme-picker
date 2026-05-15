@@ -14,11 +14,11 @@ import { SearchIcon, XIcon } from "./features/meme-picker/components/icons"
 import { t } from "./lib/i18n"
 
 /** 
- * Version: 2.8.0 - Final Polish & i18n
+ * Version: 2.9.0 - Speed Boost & Offline Cache
+ * Feature: chrome.storage.local caching (SWR)
  * Feature: Multi-language support (EN/VI)
  * Feature: Click-outside to close
  * Feature: Clearable search input
- * Cleanup: Removed unused files and imports.
  */
 
 export const config: PlasmoCSConfig = {
@@ -122,11 +122,25 @@ const MemeShelf = () => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500)
     return () => clearTimeout(timer)
   }, [searchQuery])
-  
+
+  // OFFLINE CACHE LOGIC (SWR)
   const { data: allData, isLoading: isAllLoading, isError: isAllError, refetch: refetchAll } = useQuery({
-    queryFn: async () => ({ memes: await appClient.meme.getAll() }),
-    queryKey: ["all-memes"]
+    queryKey: ["all-memes"],
+    queryFn: async () => {
+      const memes = await appClient.meme.getAll()
+      chrome.storage.local.set({ "mp_cache_memes": memes, "mp_cache_time": Date.now() })
+      return { memes }
+    }
   })
+
+  // Prime the cache from local storage on mount
+  useEffect(() => {
+    chrome.storage.local.get(["mp_cache_memes"], (result) => {
+      if (result.mp_cache_memes) {
+        queryClient.setQueryData(["all-memes"], { memes: result.mp_cache_memes })
+      }
+    })
+  }, [])
 
   const { data: suggestData, isFetching: isSuggestFetching, isError: isSuggestError, refetch: refetchSuggest } = useQuery({
     queryFn: async () => ({ memes: await appClient.suggest.get(debouncedSearch, 12) }),
