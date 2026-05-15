@@ -34,24 +34,26 @@ jobs:
       - name: Build Extension
         run: pnpm run build
 
-      - name: Zip Extension
-        run: |
-          cd build/chrome-mv3-prod
-          zip -r ../../meme-shelf-chrome-extension.zip .
-          cd ../..
-
-      - name: Upload Artifact
+      - name: Upload Artifact (For Testing)
         uses: actions/upload-artifact@v4
         with:
-          name: meme-shelf-extension
-          path: meme-shelf-chrome-extension.zip
-          retention-days: 30
+          name: meme-shelf-dev-build
+          # Upload the directory directly. GitHub will zip it once for you.
+          path: build/chrome-mv3-prod
+          retention-days: 14
+
+      - name: Prepare Release Zip
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd build/chrome-mv3-prod
+          zip -r ../../meme-shelf-release.zip .
+          cd ../..
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: meme-shelf-chrome-extension.zip
+          files: meme-shelf-release.zip
           generate_release_notes: true
           draft: false
           prerelease: false
