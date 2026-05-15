@@ -1,49 +1,76 @@
 import React from "react"
-
-import { EmptyState } from "../../../components/feedback/empty-state"
+import type { Meme } from "../../../apis/interfaces/meme"
 import { MemeCard } from "./meme-card"
-
-interface Meme {
-  id: string
-  url: string
-  title: string
-}
+import { AlertCircleIcon, ImageIcon } from "./icons"
+import { t } from "../../../lib/i18n"
 
 interface MemeGridProps {
   memes: Meme[]
   error?: string | null
   isLoading?: boolean
   onSelect?: (meme: Meme) => void
+  renderItem?: (meme: Meme, element: React.ReactElement) => React.ReactNode
+  onRetry?: () => void
 }
 
 export const MemeGrid: React.FC<MemeGridProps> = ({
   memes,
   error,
   isLoading,
-  onSelect
+  onSelect,
+  renderItem,
+  onRetry
 }) => {
   if (isLoading) {
-    return <EmptyState message={chrome.i18n.getMessage("loadingMemes")} />
+    return (
+      <div className="mp-grid">
+        {[...Array(8)].map((_, i) => (
+          <div key={`skeleton-${i}`} className="mp-skeleton" />
+        ))}
+      </div>
+    )
   }
 
   if (error) {
-    return <EmptyState message={error} />
+    return (
+      <div className="mp-status-container">
+        <div className="mp-status-icon mp-status-error">
+          <AlertCircleIcon size={24} />
+        </div>
+        <h3>{t("somethingWentWrong")}</h3>
+        <p>{error}</p>
+        <button className="mp-retry-btn" onClick={onRetry}>
+          {t("tryAgain")}
+        </button>
+      </div>
+    )
   }
 
   if (memes.length === 0) {
-    return <EmptyState message={chrome.i18n.getMessage("noMemes")} />
+    return (
+      <div className="mp-status-container">
+        <div className="mp-status-icon">
+          <ImageIcon size={24} />
+        </div>
+        <h3>{t("noMemesFound")}</h3>
+        <p>{t("trySearchingElse")}</p>
+      </div>
+    )
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-6">
-      {memes.map((meme) => (
-        <MemeCard
-          key={meme.id}
-          url={meme.url}
-          title={meme.title}
-          onClick={() => onSelect?.(meme)}
-        />
-      ))}
+    <div className="mp-grid">
+      {memes.map((meme) => {
+        const element = (
+          <MemeCard
+            key={meme.id}
+            url={meme.url}
+            title={meme.title}
+            onClick={() => onSelect?.(meme)}
+          />
+        )
+        return renderItem ? renderItem(meme, element) : element
+      })}
     </div>
   )
 }

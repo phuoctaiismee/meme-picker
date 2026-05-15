@@ -25,6 +25,7 @@ export interface Meme {
   title: string
   media_type?: string | null
   ocr_content?: string | null
+  tags?: MemeTag[]
 }
 
 export interface PaginatedResult<T> {

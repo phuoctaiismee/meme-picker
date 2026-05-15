@@ -1,176 +1,351 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.mp-inline-button {
-  align-items: center;
-  background: #2563eb;
-  border: 0;
-  border-radius: 9999px;
-  color: #ffffff;
-  cursor: pointer;
-  display: inline-flex;
-  font:
-    600 12px/1 system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  height: 28px;
-  justify-content: center;
-  margin: 4px 6px;
-  padding: 0 12px;
-  position: relative;
-  white-space: nowrap;
-  z-index: 20;
+/* --- SHADOW DOM - COMPACT ZINC DESIGN SYSTEM --- */
+:host {
+  all: initial !important;
+  display: block !important;
+  
+  /* Theme Variables */
+  --mp-background: #ffffff;
+  --mp-foreground: #09090b;
+  --mp-card: #ffffff;
+  --mp-border: #e4e4e7;
+  --mp-input: #f4f4f5;
+  --mp-muted: #71717a;
+  --mp-muted-foreground: #71717a;
+  --mp-accent: #3b82f6;
+  --mp-radius: 12px;
+  --mp-shadow: rgba(0, 0, 0, 0.08);
+  --mp-skeleton: #f0f0f2;
 }
 
-.mp-inline-button:hover {
-  background: #1d4ed8;
+@media (prefers-color-scheme: dark) {
+  :host {
+    --mp-background: #09090b;
+    --mp-foreground: #fafafa;
+    --mp-card: #09090b;
+    --mp-border: #27272a;
+    --mp-input: #18181b;
+    --mp-muted: #71717a;
+    --mp-muted-foreground: #a1a1aa;
+    --mp-shadow: rgba(0, 0, 0, 0.4);
+    --mp-skeleton: #1e1e21;
+  }
 }
 
-.mp-picker {
-  color: #f8fafc;
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+.mp-marker, .mp-shelf, .mp-header, .mp-tag, .mp-search-input, .mp-meme-item, .mp-toast, .mp-status-container {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+  box-sizing: border-box !important;
 }
 
-.mp-backdrop {
-  background: rgb(15 23 42 / 0.48);
-  inset: 0;
-  position: fixed;
-  z-index: 2147483645;
+.mp-marker {
+  position: fixed !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 14px !important;
+  height: 64px !important;
+  background-color: var(--mp-background) !important;
+  border: 1px solid var(--mp-border) !important;
+  border-right: none !important;
+  border-radius: 8px 0 0 8px !important;
+  cursor: pointer !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: -2px 0 12px var(--mp-shadow) !important;
 }
 
-.mp-panel {
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  border-radius: 14px;
-  box-shadow: 0 24px 80px rgb(0 0 0 / 0.42);
-  display: flex;
-  flex-direction: column;
-  left: 50%;
-  height: min(720px, 84vh);
-  max-width: min(560px, calc(100vw - 32px));
-  overflow: hidden;
-  position: fixed;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 560px;
-  z-index: 2147483646;
+.mp-marker:hover {
+  width: 22px !important;
+  background-color: var(--mp-input) !important;
+}
+
+.mp-marker::after {
+  content: '' !important;
+  width: 2px !important;
+  height: 20px !important;
+  background-color: var(--mp-muted-foreground) !important;
+  border-radius: 1px !important;
+}
+
+.mp-shelf {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 380px !important;
+  height: 100vh !important;
+  background-color: var(--mp-background) !important;
+  border-left: 1px solid var(--mp-border) !important;
+  box-shadow: -10px 0 40px var(--mp-shadow) !important;
+  z-index: 2147483646 !important;
+  transform: translateX(100%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  color: var(--mp-foreground) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.mp-shelf.open {
+  transform: translateX(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .mp-header {
-  align-items: center;
-  border-bottom: 1px solid #1e293b;
-  display: flex;
-  flex: 0 0 auto;
-  justify-content: space-between;
-  padding: 14px 16px;
+  padding: 20px !important;
+  border-bottom: 1px solid var(--mp-border) !important;
+  display: block !important;
+}
+
+.mp-header-top {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 16px !important;
 }
 
 .mp-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0;
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: var(--mp-foreground) !important;
+  line-height: 1 !important;
 }
 
-.mp-header p {
-  color: #94a3b8;
-  font-size: 12px;
-  line-height: 1.4;
-  margin: 2px 0 0;
+.mp-close {
+  background: transparent !important;
+  border: none !important;
+  color: var(--mp-muted-foreground) !important;
+  cursor: pointer !important;
+  padding: 6px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.mp-context {
-  border-bottom: 1px solid #1e293b;
-  color: #cbd5e1;
-  flex: 0 0 auto;
-  font-size: 12px;
-  line-height: 1.5;
-  max-height: 116px;
-  overflow: auto;
-  padding: 10px 16px;
+.mp-close:hover {
+  background-color: var(--mp-input) !important;
+  color: var(--mp-foreground) !important;
 }
 
-.mp-context-title {
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-  margin-bottom: 4px;
+.mp-search-container {
+  position: relative !important;
+  margin-bottom: 14px !important;
+  display: block !important;
 }
 
-.mp-context-title span,
-.mp-debug-context span {
-  color: #64748b;
-  display: block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.mp-search-input {
+  width: 100% !important;
+  background-color: var(--mp-input) !important;
+  border: 1px solid var(--mp-border) !important;
+  border-radius: var(--mp-radius) !important;
+  padding: 10px 36px 10px 38px !important; /* Right padding for clear btn */
+  color: var(--mp-foreground) !important;
+  font-size: 13.5px !important;
+  outline: none !important;
 }
 
-.mp-context-title button {
-  background: transparent;
-  border: 0;
-  color: #60a5fa;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 0;
+.mp-search-input:focus {
+  border-color: var(--mp-accent) !important;
+  background-color: var(--mp-background) !important;
 }
 
-.mp-context p {
-  margin: 0;
+.mp-search-icon {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: var(--mp-muted-foreground) !important;
+  display: flex !important;
 }
 
-.mp-debug-context {
-  border-bottom: 1px solid #1e293b;
-  color: #94a3b8;
-  flex: 0 0 auto;
-  font-size: 11px;
-  line-height: 1.45;
-  max-height: 150px;
-  overflow: auto;
-  padding: 10px 16px;
+.mp-search-clear {
+  position: absolute !important;
+  right: 10px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--mp-muted-foreground) !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
 }
 
-.mp-debug-context p {
-  border-top: 1px solid #1e293b;
-  margin: 8px 0 0;
-  padding-top: 8px;
+.mp-search-clear:hover {
+  color: var(--mp-foreground) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-.mp-list {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: auto;
+@media (prefers-color-scheme: dark) {
+  .mp-search-clear:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+}
+
+.mp-tags-container {
+  display: flex !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+}
+
+.mp-tags-container::-webkit-scrollbar { display: none !important; }
+
+.mp-tag {
+  padding: 5px 12px !important;
+  background-color: var(--mp-input) !important;
+  border-radius: var(--mp-radius) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  border: 1px solid var(--mp-border) !important;
+  color: var(--mp-muted-foreground) !important;
+}
+
+.mp-tag:hover {
+  border-color: var(--mp-muted-foreground) !important;
+  color: var(--mp-foreground) !important;
+}
+
+.mp-tag.active {
+  background-color: var(--mp-foreground) !important;
+  color: var(--mp-background) !important;
+  border-color: var(--mp-foreground) !important;
+}
+
+.mp-content {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  padding-top: 8px !important;
+  display: block !important;
+}
+
+.mp-section {
+  display: block !important;
+  margin-bottom: 12px !important;
+}
+
+.mp-section-header {
+  padding: 14px 20px 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--mp-muted-foreground) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  background-color: var(--mp-background) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+}
+
+.mp-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 4px !important;
+  padding: 4px 20px 24px !important;
+}
+
+.mp-meme-item {
+  border-radius: var(--mp-radius) !important;
+  overflow: hidden !important;
+  background-color: var(--mp-input) !important;
+  border: 1px solid var(--mp-border) !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+.mp-card-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* --- SMOOTH PULSE ANIMATION --- */
+@keyframes mp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.mp-skeleton {
+  background-color: var(--mp-skeleton) !important;
+  animation: mp-pulse 1.8s ease-in-out infinite !important;
+  border-radius: var(--mp-radius) !important;
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* --- ULTRA-SUBTLE STATUS STATES --- */
+.mp-status-container {
+  padding: 32px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.mp-status-icon {
+  width: 36px !important;
+  height: 36px !important;
+  background-color: var(--mp-input) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--mp-muted-foreground) !important;
+  margin-bottom: 2px !important;
+  opacity: 0.8 !important;
+}
+
+.mp-status-icon.mp-status-error {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  color: #ef4444 !important;
+}
+
+.mp-status-container h3 {
+  margin: 0 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--mp-foreground) !important;
+}
+
+.mp-status-container p {
+  margin: 0 !important;
+  font-size: 12px !important;
+  color: var(--mp-muted-foreground) !important;
+  line-height: 1.4 !important;
+  max-width: 220px !important;
+}
+
+.mp-retry-btn {
+  background-color: var(--mp-foreground) !important;
+  color: var(--mp-background) !important;
+  border: none !important;
+  padding: 6px 16px !important;
+  border-radius: 8px !important;
+  margin-top: 6px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
 }
 
 .mp-toast {
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  bottom: 24px;
-  box-shadow: 0 18px 60px rgb(0 0 0 / 0.35);
-  color: #f8fafc;
-  font:
-    600 13px/1.4 system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  left: 50%;
-  max-width: min(420px, calc(100vw - 32px));
-  padding: 10px 14px;
-  position: fixed;
-  text-align: center;
-  transform: translateX(-50%);
-  z-index: 2147483647;
+  position: fixed !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: var(--mp-foreground) !important;
+  color: var(--mp-background) !important;
+  padding: 10px 20px !important;
+  border-radius: var(--mp-radius) !important;
+  z-index: 2147483647 !important;
+  font-size: 13px !important;
+  box-shadow: 0 8px 24px var(--mp-shadow) !important;
 }

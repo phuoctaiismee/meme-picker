@@ -6,7 +6,8 @@ const mapMeme = (meme: CmsMeme): Meme => ({
   url: meme.media_url,
   title: meme.title ?? meme.media_key ?? "Untitled meme",
   media_type: meme.media_type,
-  ocr_content: meme.ocr_content
+  ocr_content: meme.ocr_content,
+  tags: meme.tags
 })
 
 export const meme = {
